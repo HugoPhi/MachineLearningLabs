@@ -5,7 +5,7 @@ import numpy as np
 
 class DecisionTree:
 
-    def __init__(self, data, label, attr_dict, key2id=None, depth=0, valid=None, valid_label=None, pruning='none', id2name=dict()):
+    def __init__(self, data, label, attr_dict, key2id=dict(), depth=0, valid=None, valid_label=None, pruning='none', id2name=dict()):
         # self attributes
         self.data = data
         self.label = label
@@ -39,7 +39,7 @@ class DecisionTree:
         else:
             return np.array([self.tree(x) for x in data])
 
-    def build(self, data, label, attr_dict, key2id=None, depth=0, valid=None, valid_label=None, father=None, pruning='none'):
+    def build(self, data, label, attr_dict, key2id=dict(), depth=0, valid=None, valid_label=None, father=None, pruning='none'):
         if father is None:
             key2id = {key: idx for idx, key in enumerate(attr_dict.keys())}
         if (label[0] == label).all():

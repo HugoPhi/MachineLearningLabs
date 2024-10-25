@@ -1,11 +1,12 @@
 import pandas as pd
+from copy import deepcopy
 import numpy as np
 
 
 def load_df(path):
-    if path.endwith('.csv'):
+    if path.endswith('.csv'):
         df = pd.read_csv(path)
-    elif path.endwith('.xlsx'):
+    elif path.endswith('.xlsx'):
         df = pd.read_excel(path)
     else:
         df = None
@@ -42,16 +43,17 @@ def discretize(df, attrs):
         res = np.array([p * np.log2(p) if p != 0 else 0 for p in prob])
         return -np.sum(res)
 
-    label = df['label'].to_numpy()
+    new_df = deepcopy(df)
+    nlabel, _ = pd.factorize(new_df['label'])
     for attr in attrs:
-        arr = df[attr].to_numpy()
+        arr = new_df[attr].to_numpy()
         ix = np.argsort(arr)
         arr = arr[ix]
-        label_temp = label[ix]
+        label_temp = nlabel[ix]
 
         mode = np.array([arr[0]] + [(arr[i] + arr[i + 1]) / 2 for i in range(len(arr) - 1)] + [arr[-1]])
-        print(mode)
-        print(label_temp)
+        # print(mode)
+        # print(label_temp)
 
         gain0 = Ent(label_temp)
         gains = []
@@ -62,16 +64,16 @@ def discretize(df, attrs):
             if len(label_le) == 0 or len(label_gt) == 0:
                 gains.append(0)
 
-            gain = gain0 - len(label_le) / len(label) * Ent(label_le) - len(label_gt) / len(label) * Ent(label_gt)
+            gain = gain0 - len(label_le) / len(nlabel) * Ent(label_le) - len(label_gt) / len(nlabel) * Ent(label_gt)
             gains.append(gain)
 
         ix = np.argmax(gains)
         opt_split = mode[ix]
 
-        df[attr] = df[attr].apply(lambda x: f'<={opt_split:5.2}' if x <= opt_split else f'>{opt_split:5.2}')
-        # df[attr] = df[attr].apply(lambda x: f'le{opt_split:5.2}' if x <= opt_split else f'gt{opt_split:5.2}')
+        new_df[attr] = new_df[attr].apply(lambda x: f'≤{opt_split:.2f}' if x <= opt_split else f'>{opt_split:.2f}')
+        # new_df[attr] = new_df[attr].apply(lambda x: f'le{opt_split:5.2}' if x <= opt_split else f'gt{opt_split:5.2}')
 
-    return df
+    return new_df
 
 
 # TODO: missing value

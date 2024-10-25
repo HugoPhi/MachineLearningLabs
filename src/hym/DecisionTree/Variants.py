@@ -4,16 +4,17 @@ from .utils import get_datas, discretize
 
 
 class ID3(DecisionTree):
-    def __init__(self, df, max_depth=0, valid_rate=0, valid_ix=[], pruning='none'):
+    def __init__(self, df, max_depth=0, valid_rate=0., valid_ix=[], pruning='none', random_state=42):
         data, label, attr_dict, id2name = get_datas(df)
         train_ix = np.setdiff1d(np.arange(data.shape[0]), valid_ix)
         # print(data.shape)
         # print(train_ix)
 
         # shuffle
-        # shuffle_ix = np.random.permutation(len(data))
-        # data = data[shuffle_ix]
-        # labels = labels[shuffle_ix]
+        np.random.seed(random_state)
+        shuffle_ix = np.random.permutation(len(data))
+        data = data[shuffle_ix]
+        label = label[shuffle_ix]
 
         if valid_rate != 0:
             SPLIT = int(data.shape[0] * valid_rate)
@@ -47,16 +48,32 @@ class ID3(DecisionTree):
         real_label = np.array([self.id2name[x] for x in self.label])
         real_valid_label = np.array([self.id2name[x] for x in self.valid_label])
 
-        return self.data, real_label, self.valid, real_valid_label, self.pruning, self.id2name
+        data_dict = {
+            'train_data': self.data,
+            'train_label': real_label,
+            'valid_data': self.valid,
+            'valid_label': real_valid_label,
+            'pruning method': self.pruning,
+            'id2name': self.id2name
+        }
+
+        return data_dict
 
 
 class C4_5(DecisionTree):
-    def __init__(self, df, attrs2discretize, max_depth=0, valid_rate=0, valid_ix=[], pruning='none'):
-        df = discretize(df=df, attrs=attrs2discretize)
-        data, label, attr_dict, id2name = get_datas(df)
+    def __init__(self, df, attrs2discretize, max_depth=0, valid_rate=0., valid_ix=[], pruning='none', random_state=42):
+        new_df = discretize(df=df, attrs=attrs2discretize)
+        self.df_after_dis = new_df.copy()
+        data, label, attr_dict, id2name = get_datas(new_df)
         train_ix = np.setdiff1d(np.arange(data.shape[0]), valid_ix)
         # print(data.shape)
         # print(train_ix)
+
+        # shuffle
+        np.random.seed(random_state)
+        shuffle_ix = np.random.permutation(len(data))
+        data = data[shuffle_ix]
+        label = label[shuffle_ix]
 
         if valid_rate != 0:
             SPLIT = int(data.shape[0] * valid_rate)
@@ -111,3 +128,19 @@ class C4_5(DecisionTree):
             IV += (len(label_temp) / len(data)) * np.log2(len(label_temp) / len(data))
 
         return gain
+
+    def datas(self):
+        real_label = np.array([self.id2name[x] for x in self.label])
+        real_valid_label = np.array([self.id2name[x] for x in self.valid_label])
+
+        data_dict = {
+            'df after discretizing': self.df_after_dis,
+            'train_data': self.data,
+            'train_label': real_label,
+            'valid_data': self.valid,
+            'valid_label': real_valid_label,
+            'pruning method': self.pruning,
+            'id2name': self.id2name
+        }
+
+        return data_dict
