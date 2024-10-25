@@ -22,7 +22,7 @@
 请使用 `requirements.txt` 文件来配置依赖环境。推荐使用 [pload](https://github.com/HugoPhi/python_venv_loader) 作为虚拟环境管理工具，这是一个轻量级的 Python 虚拟环境管理工具，专注于 Python 环境的管理。具体操作如下：
 
 ```bash
-pload new -m 'MLLabs' -v 
+pload new -m 'MLLabs' -v 3.8.20 -f requirements.txt  # 推荐使用20，其它版本没测试过。
 ```
 
 ## 使用方法
@@ -171,9 +171,9 @@ test/
     - [x] iris 
   - [x] 决策树
     - [x] watermelon2.0
-    - [ ] iris
+    - [x] iris
     - [ ] ice-cream
-    - [ ] wine quality
+    - [x] wine quality
     - [ ] house price
   - [ ] 支持向量机
   - [ ] 神经网络

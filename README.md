@@ -1,45 +1,49 @@
-# Machine Learning Experiments
+Here's the English translation of your machine learning lab README:
+
+---
+
+# Machine Learning Labs
 
 [![GitHub stars](https://img.shields.io/github/stars/HugoPhi/MachineLearningLabs.svg?style=social)](https://github.com/HugoPhi/MachineLearningLabs/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/HugoPhi/MachineLearningLabs.svg?style=social)](https://github.com/HugoPhi/MachineLearningLabs/network/members)
 [![GitHub license](https://img.shields.io/github/license/HugoPhi/MachineLearningLabs.svg)](https://github.com/HugoPhi/MachineLearningLabs/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/HugoPhi/MachineLearningLabs.svg)](https://github.com/HugoPhi/MachineLearningLabs/issues)
 
-[中文](README_zh.md)
+[中文文档](README.md)
 
 ---
 
-This repository contains machine learning models implemented from scratch using `numpy`, `pandas`, and `matplotlib`, aiming to help learners understand the internal workings of various machine learning algorithms. If you find any errors during use, please raise them in the [Issues](https://github.com/HugoPhi/MachineLearningLabs/issues) section or contribute via a Pull Request to improve this project.
+This repository contains machine learning models implemented from scratch using `numpy`, `pandas`, and `matplotlib`, aimed at helping learners understand the internal workings of various machine learning algorithms. If you encounter any issues while using this repository, feel free to open an [Issue](https://github.com/HugoPhi/MachineLearningLabs/issues) or improve the project by submitting a Pull Request.
 
 ## Features
 
-- Manually implement machine learning algorithms and package them into Python modules for testing.
+- Implement machine learning algorithms manually and package them in Python for testing.
 - Provide comprehensive basic tests.
 - Easily create and run custom tests.
 
-## Installation Dependencies
+## Install Dependencies
 
-Please use the `requirements.txt` file to configure the dependency environment. It is recommended to use [pload](https://github.com/HugoPhi/python_venv_loader) as a virtual environment management tool. This is a lightweight Python virtual environment management tool that focuses on Python environment management. The specific operation is as follows:
+Use the `requirements.txt` file to configure the environment dependencies. It’s recommended to use [pload](https://github.com/HugoPhi/python_venv_loader) as a lightweight virtual environment management tool focused on managing Python environments. To set it up, follow these steps:
 
 ```bash
-pload new -m 'MLLabs' -v 
+pload new -m 'MLLabs' -v 3.8.20 -f requirements.txt  # v3.8.20 recommended; other versions not tested.
 ```
 
 ## Usage
 
-The following introduces how to run benchmark tests, customize models, and create and run tests.
+The following sections outline how to run benchmark tests, custom models, and create and execute tests.
 
 ### 1. Run Benchmark Tests
 
-First, create a specific virtual environment for the project and enter that environment. For information on how to create a virtual environment using pload, please refer to: [Using pload to Create a Virtual Environment](https://github.com/HugoPhi/python_venv_loader).
+First, create a dedicated virtual environment for the project and activate it. To learn more about using pload to create virtual environments, refer to: [Creating Virtual Environments with pload](https://github.com/HugoPhi/python_venv_loader).
 
-1. **Clone the repository:**
+1. **Clone the Repository:**
 
     ```bash
     git clone --branch main --single-branch https://github.com/HugoPhi/MachineLearningLabs.git
     ```
 
-2. **Install the local library:**
+2. **Install Local Library:**
 
     Enter the project directory:
 
@@ -47,15 +51,15 @@ First, create a specific virtual environment for the project and enter that envi
     cd MachineLearningLabs/
     ```
 
-    Build the library:
+    Compile and install the library:
 
     ```bash
     pip install .
     ```
 
-    You can verify the installation by running `pip list` to check if the `hym` library is included.
+    You can verify successful installation by running `pip list` and checking if the `hym` library is included.
 
-3. **Run the test:**
+3. **Run Tests:**
 
     For example, to run the `test/DecisionTree/watermelon2.0` experiment, execute the following in the project directory:
 
@@ -63,35 +67,35 @@ First, create a specific virtual environment for the project and enter that envi
     python ./test/DecisionTree/watermelon2.0/main.py
     ```
 
-    You will obtain the experimental results.
+    This will generate the experiment results.
 
-### 2. Customize Models
+### 2. Custom Models
 
-You can modify or implement your own machine learning models. The project structure mainly includes two parts: `src` and `test`. `src` is used to store the source code of machine learning algorithms, including algorithm implementation, data loading, auxiliary functions, etc.; `test` is used to store basic tests and custom tests for each algorithm. Understanding the project structure will help you make more efficient and accurate modifications.
+You can modify or create your own machine learning models. The project structure is divided into two main parts: `src` and `test`. The `src` directory stores the source code for machine learning algorithms, while the `test` directory stores basic and custom tests for each algorithm. Understanding the project structure will help you modify it more efficiently.
 
-#### 2.1. `src` Directory
+#### 2.1 `src` Directory
 
-The `src` directory is used to store source code, and its structure is as follows:
+The `src` directory stores the source code and is organized as follows:
 
 ```
-src/   
-├── hym/   
-│   ├── __init__.py    
-│   ├── DecisionTree/    
-│   │   ├── __init__.py    
-│   │   ├── DecisionTree.py    
-│   │   └── ...    
-│   ├── LinearRegression/    
-│   └── ...    
+src/
+├── hym/
+│   ├── __init__.py
+│   ├── DecisionTree/
+│   │   ├── __init__.py
+│   │   ├── DecisionTree.py
+│   │   └── ...
+│   ├── LinearRegression/
+│   └── ...
 ```
 
-- **`hym/`**: Top-level module containing implementations of various machine learning algorithms.
-- If you want to add a new algorithm category, such as Support Vector Machine, create a `SupportVectorMachine/` directory under `hym/` and add the following in `hym/__init__.py`:
+- **`hym/`**: Top-level module containing the implementations of various machine learning algorithms.
+- To add a new algorithm category, such as Support Vector Machine, create a `SupportVectorMachine/` directory under `hym/`, and add it to `hym/__init__.py` as follows:
 
     ```python
     from . import DecisionTree
     from . import LinearRegression
-    from . import SupportVectorMachine  # Add new algorithm module
+    from . import SupportVectorMachine  # New algorithm module
 
     __all__ = [
         'DecisionTree',
@@ -102,17 +106,17 @@ src/
 
 - **File Naming Conventions:**
 
-    1. **Algorithm Class Files**: Use PascalCase naming, e.g., `BasicDecisionTree.py`, `Variants.py`, used to implement algorithm classes.
-    2. **Auxiliary Class Files**: Use lowercase with underscores, e.g., `node.py`, used to implement auxiliary classes.
-    3. **Auxiliary Function Files**: `utils.py`, used to implement auxiliary function libraries such as data loading, preprocessing, and mathematical functions.
-    4. **Package Initialization Files**: `__init__.py`, used to mark packages and submodules. Add the content to be exported to the `__all__` list.
+    1. **Algorithm Class Files**: Use CamelCase, e.g., `BasicDecisionTree.py`, `Variants.py`, for implementing algorithm classes.
+    2. **Helper Class Files**: Use snake_case, e.g., `node.py`, for implementing helper classes.
+    3. **Helper Function Files**: `utils.py` contains utility functions, e.g., data loading, preprocessing, and math functions.
+    4. **Package Initialization File**: `__init__.py`, which marks the package and submodules, with exported contents listed in `__all__`.
 
-#### 2.2. `test` Directory
+#### 2.2 `test` Directory
 
-The `test` directory is used to store test code, and its structure is similar to `src`:
+The `test` directory stores test code and is structured similarly to `src`:
 
 ```
-test/    
+test/
 ├── DecisionTree/
 │   ├── iris/
 │   │   ├── iris.xlsx
@@ -121,26 +125,26 @@ test/
 │   │   ├── watermelon2.0.xlsx
 │   │   └── main.py
 │   └── ...
-├── LinearRegression/    
-└── ... 
+├── LinearRegression/
+└── ...
 ```
 
-- Under `test/`, create directories according to algorithm categories; the names should correspond to the algorithm categories in `src/`.
-- Create test cases in the corresponding algorithm directories. Some basic dataset tests have been implemented; you can also add your own experiments.
+- Create directories under `test/` by algorithm category, matching the structure in `src/`.
+- Inside each algorithm directory, add test cases. Some tests for basic datasets are already provided, but you can also add your own experiments.
 
-#### 2.3. Other Important Files
+#### 2.3 Other Important Files
 
 1. **setup.py**
 
-    Contains package build information such as version, dependencies, and author. The version number follows the format: `v[x].[y].[z]`, where:
+    Contains package build information such as version, dependencies, and author information. The version format follows `v[x].[y].[z]`, where:
 
-    - `x`: Major updates with significant API changes that are not backward compatible.
-    - `y`: Addition of significant new features, such as implementing new algorithm classes.
-    - `z`: Minor updates, bug fixes, small feature additions, or minor changes.
+    - `x`: Major updates, breaking API changes.
+    - `y`: Significant new features, such as implementing a new algorithm category.
+    - `z`: Minor updates, including bug fixes or small adjustments.
 
 2. **README.md**
 
-    Records the usage of the project and the latest updates. It is recommended to check regularly for the latest information.
+    Documents usage and updates. It’s recommended to check periodically for the latest information.
 
 ## Progress
 
@@ -155,20 +159,20 @@ test/
     - [x] C4.5
     - [ ] CART
   - [ ] Support Vector Machine
-  - [ ] Neural Network
+  - [ ] Neural Networks
 - [ ] **Unsupervised Learning**
-  - [ ] K-Means Clustering
+  - [ ] K-means Clustering
   - [ ] Principal Component Analysis
-
+     
 </details>
 
 <details>
-<summary>Tests</summary>
+<summary>Testing</summary>
 
 - [ ] **Supervised Learning**
   - [ ] Linear Regression
   - [x] Logistic Regression
-    - [x] iris 
+    - [x] iris
   - [x] Decision Tree
     - [x] watermelon2.0
     - [x] iris
@@ -176,28 +180,25 @@ test/
     - [x] wine quality
     - [ ] house price
   - [ ] Support Vector Machine
-  - [ ] Neural Network
+  - [ ] Neural Networks
 - [ ] **Unsupervised Learning**
-  - [ ] K-Means Clustering
+  - [ ] K-means Clustering
   - [ ] Principal Component Analysis
 
 </details>
 
 ## References
 
-Please add your references here.
+Add your references here.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE). For details, please refer to the LICENSE file.
+This project is licensed under the [MIT License](LICENSE). Please refer to the LICENSE file for details.
 
 ---
 
-If you find this project helpful, please [⭐️ Star](https://github.com/HugoPhi/MachineLearningLabs) to support us!
+If you find this project helpful, please consider [⭐️ starring](https://github.com/HugoPhi/MachineLearningLabs) us!
 
 [![Star History Chart](https://api.star-history.com/svg?repos=HugoPhi/MachineLearningLabs&type=Timeline)](https://star-history.com/#HugoPhi/MachineLearningLabs&Timeline)
 
 ---
-
-
-

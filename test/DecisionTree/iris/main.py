@@ -6,7 +6,7 @@ sed = np.random.randint(0, 10000)
 print(f'seed is {sed}')
 sed = 7891
 
-df = dt.load_df('./iris_data.xlsx')
+df = dt.load_df('./iris.xlsx')
 df = df.rename(columns={'species': 'label'})
 
 

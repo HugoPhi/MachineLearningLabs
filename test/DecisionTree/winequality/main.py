@@ -1,7 +1,7 @@
 import hym.DecisionTree as dt
 import numpy as np
 
-df = dt.load_df('./winequality_data.xlsx')
+df = dt.load_df('./winequality.xlsx')
 df = df.rename(columns={'quality label': 'label'})
 column_names_without_last = df.columns[:-1].tolist()
 
