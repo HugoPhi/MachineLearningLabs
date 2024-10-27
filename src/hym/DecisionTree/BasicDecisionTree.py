@@ -7,6 +7,30 @@ class DecisionTree:
 
     def __init__(self, data, label, attr_dict, key2id=dict(), depth=0, valid=None, valid_label=None, pruning='none', id2name=dict()):
         # self attributes
+        """
+        Initialize DecisionTree.
+
+        Parameters
+        ----------
+        data : 2d array
+            training data
+        label : 1d array
+            labels of the training data
+        attr_dict : dict
+            {attr_name: [attr_val1, attr_val2, ...]}
+        key2id : dict
+            {attr_name: attr_id}
+        depth : int
+            depth of the tree
+        valid : 2d array
+            validation data
+        valid_label : 1d array
+            labels of the validation data
+        pruning : str
+            way of pruning
+        id2name : dict
+            {attr_id: attr_name}
+        """
         self.data = data
         self.label = label
         self.attr_dict = attr_dict
@@ -21,6 +45,19 @@ class DecisionTree:
         self.tree = None
 
     def fit(self):
+        """
+        Builds and fits the decision tree model using the training data.
+
+        This method constructs the decision tree model based on the provided
+        training data, labels, and attributes. It uses a recursive approach
+        to build the tree structure by selecting optimal attributes at each
+        node. The fit process also considers pruning strategies if specified.
+
+        Returns
+        -------
+        Node
+            The root node of the constructed decision tree.
+        """
         self.tree = self.build(
             data=self.data,
             label=self.label,
@@ -34,12 +71,61 @@ class DecisionTree:
         return self.tree
 
     def __call__(self, data):
+        """
+        Makes predictions on the input data using the constructed decision tree model.
+
+        Parameters
+        ----------
+        data : array-like of shape (n_samples, n_features)
+            The input data to make predictions on.
+
+        Returns
+        -------
+        array-like of shape (n_samples,)
+            Predicted labels for the input data.
+        """
         if data.ndim == 1:
             return self.tree(data)
         else:
             return np.array([self.tree(x) for x in data])
 
     def build(self, data, label, attr_dict, key2id=dict(), depth=0, valid=None, valid_label=None, father=None, pruning='none'):
+        """
+        Recursively builds the decision tree model.
+
+        This method constructs the decision tree by recursively selecting 
+        the optimal attribute at each node and partitioning the data 
+        according to attribute values. It handles leaf node creation 
+        when data is pure, attributes are exhausted, or data is uniform 
+        with respect to an attribute. Pruning strategies can be applied 
+        to optimize the tree structure.
+
+       Parameters
+        ----------
+        data : array-like of shape (n_samples, n_features)
+            The training data to build the tree from.
+        label : array-like of shape (n_samples,)
+            The labels corresponding to the training data.
+        attr_dict : dict
+            A dictionary mapping attribute names to possible values.
+        key2id : dict, optional
+            A dictionary mapping attribute names to their indices.
+        depth : int, optional
+            The current depth of the tree.
+        valid : array-like, optional
+            Validation data used for pruning.
+        valid_label : array-like, optional
+            Validation labels used for pruning.
+        father : Node, optional
+            The parent node of the current subtree.
+        pruning : str, optional
+            The pruning strategy to apply ('none', 'pre', or 'post').
+
+        Returns
+        -------
+        Node
+            The root node of the constructed subtree.
+        """
         if father is None:
             key2id = {key: idx for idx, key in enumerate(attr_dict.keys())}
         if (label[0] == label).all():
@@ -118,7 +204,22 @@ class DecisionTree:
 
     def pruning_metric(self, data, label, tree):
         '''
-        Pre-Pruning Strategy: Maximize metric
+        Pre-Pruning Strategy of Decision Tree, Maximize metric here, use accuracy.   
+        That is, you should Maximize the accuracy on validation set while pruning.
+
+        Parameters
+        ----------
+        data : array-like
+            The data to be classified.
+        label : array-like
+            The labels of the data.
+        tree : Node
+            The tree to be pruned.
+
+        Returns
+        -------
+        float
+            The accuracy on validation set.
         '''
 
         res = []
@@ -130,7 +231,22 @@ class DecisionTree:
 
     def post_pruning(self, valid, valid_label, tree_node, root=None):
         '''
-        Post-Pruning Strategy: Maximize metric
+        Post-Pruning Strategy of Decision Tree, Maximize metric here, use accuracy.  
+        That is, you should Maximize the accuracy on validation set while pruning.
+
+        Parameters
+        ----------
+        data : array-like
+            The data to be classified.
+        label : array-like
+            The labels of the data.
+        tree : Node
+            The tree to be pruned.
+
+        Returns
+        -------
+        Node
+            The pruned tree
         '''
 
         root = root
@@ -158,9 +274,29 @@ class DecisionTree:
         return tree_node
 
     def attr_selection_metric(self, data, label, attr, attr_val):
-        '''
-        Based on information gain
-        '''
+        """
+        Function to Calculate the best attribute. Based on information gain here.
+
+        This function computes the information gain of a given attribute
+        by comparing the entropy of the labels before and after splitting
+        the data based on the attribute values.
+
+        Parameters
+        ----------
+        data : 2D array
+            The dataset containing features and samples.
+        label : 1D array
+            The labels corresponding to the samples in the dataset.
+        attr : int
+            The index of the attribute for which the metric is calculated.
+        attr_val : list
+            The list of possible values for the attribute.
+
+        Returns
+        -------
+        float
+            The information gain of the attribute.
+        """
 
         def Ent(label):
             prob = np.bincount(label) / len(label)
@@ -176,10 +312,33 @@ class DecisionTree:
         return gain
 
     def opt_attr(self, data, label, attr_dict, key2id):
-        '''
-        Based on information gain
-        '''
+        """
+        Selects the optimal attribute for splitting the data based on function: `attr_selection_metric`.
 
+        This method computes the information gain for each attribute in the
+        provided attribute dictionary and selects the attribute with the highest
+        information gain as the optimal attribute for splitting the data. It returns
+        the name of the selected attribute, its possible values, and an updated
+        attribute dictionary excluding the selected attribute.
+
+        Parameters
+        ----------
+        data : 2D array
+            The dataset containing features and samples.
+        label : 1D array
+            The labels corresponding to the samples in the dataset.
+        attr_dict : dict
+            A dictionary mapping attribute names to possible values.
+        key2id : dict
+            A dictionary mapping attribute names to their indices.
+
+        Returns
+        -------
+        tuple
+            A tuple containing the name of the selected attribute, a list of its
+            possible values, and an updated attribute dictionary without the selected
+            attribute.
+        """
         attr = np.argmax([self.attr_selection_metric(data, label, key2id[key], attr_val) for key, attr_val in attr_dict.items()])
         attr_val = list(attr_dict.values())[attr]
         aattr_dict = {k: v for j, (k, v) in enumerate(attr_dict.items()) if j != attr}  # remove the selected attribute

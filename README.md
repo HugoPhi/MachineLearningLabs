@@ -1,7 +1,3 @@
-Here's the English translation of your machine learning lab README:
-
----
-
 # Machine Learning Labs
 
 [![GitHub stars](https://img.shields.io/github/stars/HugoPhi/MachineLearningLabs.svg?style=social)](https://github.com/HugoPhi/MachineLearningLabs/stargazers)
@@ -9,7 +5,7 @@ Here's the English translation of your machine learning lab README:
 [![GitHub license](https://img.shields.io/github/license/HugoPhi/MachineLearningLabs.svg)](https://github.com/HugoPhi/MachineLearningLabs/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/HugoPhi/MachineLearningLabs.svg)](https://github.com/HugoPhi/MachineLearningLabs/issues)
 
-[中文文档](README.md)
+[中文文档](README_zh.md)
 
 ---
 
@@ -157,7 +153,7 @@ test/
   - [x] Decision Tree
     - [x] ID3
     - [x] C4.5
-    - [ ] CART
+    - [x] CART
   - [ ] Support Vector Machine
   - [ ] Neural Networks
 - [ ] **Unsupervised Learning**
@@ -176,9 +172,9 @@ test/
   - [x] Decision Tree
     - [x] watermelon2.0
     - [x] iris
-    - [ ] ice-cream
+    - [x] ice-cream
     - [x] wine quality
-    - [ ] house price
+    - [x] house price
   - [ ] Support Vector Machine
   - [ ] Neural Networks
 - [ ] **Unsupervised Learning**

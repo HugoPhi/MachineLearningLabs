@@ -153,7 +153,7 @@ test/
   - [x] 决策树
     - [x] ID3
     - [x] C4.5
-    - [ ] CART 
+    - [x] CART 
   - [ ] 支持向量机
   - [ ] 神经网络
 - [ ] **无监督学习**
@@ -172,9 +172,9 @@ test/
   - [x] 决策树
     - [x] watermelon2.0
     - [x] iris
-    - [ ] ice-cream
+    - [x] ice-cream
     - [x] wine quality
-    - [ ] house price
+    - [x] house price
   - [ ] 支持向量机
   - [ ] 神经网络
 - [ ] **无监督学习**
